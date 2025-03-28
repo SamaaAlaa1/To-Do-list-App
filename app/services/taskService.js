@@ -32,13 +32,22 @@ export const fetchTask = async (id, token) => {
   }
 };
 
-export const updateTask = async (id, taskTitle, taskContent, token) => {
+export const updateTask = async (id, taskTitle, taskContent, endDate, completed, token) => {
+  console.log("Token after update request:", token);
+
   if (!token) throw new Error("Authentication failed. Please log in again.");
+
+  console.log("Token being sent:", token);
+  console.log("Updating task with:", { title: taskTitle, content: taskContent, endDate });
 
   try {
     await axios.patch(
       `${API_URL}/${id}`,
-      { title: taskTitle, content: taskContent },
+      { 
+        title: taskTitle,
+        content: taskContent,
+        endDate: endDate,  
+      },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return true;
@@ -47,6 +56,8 @@ export const updateTask = async (id, taskTitle, taskContent, token) => {
     throw new Error(error.response?.data?.message || "Failed to update task.");
   }
 };
+
+
 
 export const deleteTask = async (id, token) => {
   if (!token) throw new Error("Authentication failed. Please log in again.");

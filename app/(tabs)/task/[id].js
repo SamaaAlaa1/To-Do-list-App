@@ -52,17 +52,12 @@ export default function TaskDetailsScreen() {
       console.error(error);
     }
   };
-
+   let completed = false;
   const handleUpdate = async () => {
-    if (!taskTitle.trim() || !taskContent.trim()) {
-      Alert.alert("Error", "Title and content cannot be empty!");
-      return;
-    }
-
-    setLoading(true);
     try {
-      await updateTask(id, taskTitle, taskContent, endDate, user.token);
+      await updateTask(id, taskTitle, taskContent, endDate,  completed, user.token);
       Alert.alert("Success", "Task updated!");
+      refreshTasks();
       router.replace({
         pathname: "/",
         params: { refresh: "true" },
